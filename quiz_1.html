@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz-Southern star</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<style>
+    i{
+        font-size:35px;
+        color:black;
+    }
+</style>
+<body>
+<div id="Navbar"></div>
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="card my-5 shadow-lg w-50" id="quizCard1">
+            <img src="./images/southern star.jpeg" style="height: 300px;" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="py-2"><strong class="">Do you know the Southern Stars?</strong></p>
+                <p class="card-text">Play this quiz for entertainment and joy.</p>
+                <div class="row">
+                    <a class=" btn-lg " href="https://wa.me/918929864832"><i class="fab fa-whatsapp"></i></a>
+                    <a class=" btn-lg " href="https://www.instagram.com/keshav_udesi"><i class="fab fa-instagram"></i></a>   
+                </div>
+                <button id="playQuizBtn" class="btn btn-primary mt-2">Play</button>
+            </div>
+        </div>
+
+        <div class="card my-5 shadow-lg d-none" id="quizCard2">
+            <div class="card-body">
+                <h5 class="card-title">Rules:</h5>
+                <p class="card-text">Answer the questions correctly to score points.</p>
+                <p class="card-text">You will have multiple-choice options for each question. Choose the correct option.</p>
+                <p class="card-text">Once you start the quiz, you cannot go back to previous questions.</p>
+                <button id="startQuizBtn" class="btn btn-primary">Start Quiz</button>
+            </div>
+        </div>
+
+        <div class="card my-5 shadow-lg d-none" id="quizCard3" style="width:33rem;">
+            <div class="card-body">
+                <p class="question"></p>
+                <div class="options">
+                    <!-- Options will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!--container-->
+
+<script>
+    document.getElementById('playQuizBtn').addEventListener('click', function() {
+        // Show the rules card and hide the main card
+        document.getElementById('quizCard1').classList.add('d-none');
+        document.getElementById('quizCard2').classList.remove('d-none');
+    });
+
+    document.getElementById('startQuizBtn').addEventListener('click', function() {
+        // Define quiz questions array
+        const quizQuestions = [
+    {
+        question: "What is the name of the girl who wore glass slippers in a famous fairy tale?",
+        options: ["Cinderella", "Snow White", "Belle", "Aurora"],
+        correctAnswer: "Cinderella"
+    },
+    {
+        question: "Who is the main character in the fairy tale 'Jack and the Beanstalk'?",
+        options: ["Jack", "Peter Pan", "Tom Thumb", "Hansel"],
+        correctAnswer: "Jack"
+    },
+    {
+        question: "What does Rumpelstiltskin want in exchange for spinning straw into gold for the miller's daughter?",
+        options: ["Her first-born child", "A golden crown", "His freedom", "Magic beans"],
+        correctAnswer: "Her first-born child"
+    },
+    {
+        question: "Which fairy tale character is known for having hair long enough to climb?",
+        options: ["Rapunzel", "Sleeping Beauty", "Little Red Riding Hood", "The Little Mermaid"],
+        correctAnswer: "Rapunzel"
+    },
+    {
+        question: "Who is the villain in the story 'Hansel and Gretel'?",
+        options: ["The Witch", "The Evil Queen", "The Big Bad Wolf", "The Ogre"],
+        correctAnswer: "The Witch"
+    },
+    {
+        question: "What kind of animal is the character Puss in 'Puss in Boots'?",
+        options: ["Cat", "Dog", "Rabbit", "Mouse"],
+        correctAnswer: "Cat"
+    },
+    {
+        question: "In the tale 'The Ugly Duckling,' what does the duckling eventually turn into?",
+        options: ["Swan", "Peacock", "Goose", "Eagle"],
+        correctAnswer: "Swan"
+    },
+    {
+        question: "What item does the fairy godmother use to transform Cinderella's rags into a ballgown?",
+        options: ["Magic Wand", "Pumpkin", "Fairy Dust", "Wishing Star"],
+        correctAnswer: "Magic Wand"
+    },
+    {
+        question: "What is the name of the evil queen in 'Snow White'?",
+        options: ["Queen Grimhilde", "Maleficent", "Cruella de Vil", "Ursula"],
+        correctAnswer: "Queen Grimhilde"
+    },
+    {
+        question: "In 'The Little Mermaid,' what does Ariel exchange her voice for?",
+        options: ["Legs", "Eternal Youth", "Human Form", "Treasure"],
+        correctAnswer: "Legs"
+    }
+    // Add more questions here
+];
+
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Function to display current question
+        function displayQuestion() {
+            const questionElement = document.querySelector('#quizCard3 .question');
+            const optionsElement = document.querySelector('#quizCard3 .options');
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+
+            // Display question
+            questionElement.textContent = currentQuestion.question;
+
+            // Display options
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const optionButton = document.createElement('button');
+                optionButton.textContent = option;
+                optionButton.classList.add('btn', 'btn-primary','btn-lg','w-100','my-2');
+                optionButton.dataset.index = index; // Store index for checking correct answer
+                optionButton.addEventListener('click', () => {
+                    const selectedOptionIndex = parseInt(optionButton.dataset.index);
+                    if (selectedOptionIndex === currentQuestion.options.indexOf(currentQuestion.correctAnswer)) {
+                        optionButton.style.backgroundColor = 'green'; // Change background color to green
+                        optionButton.innerHTML = 'Correct <i class="fas fa-check-circle"></i>'; // Change text to "Correct"
+                        score++; // Increment score for correct answer
+                    } else {
+                        optionButton.style.backgroundColor = 'red'; // Change background color to red
+                        optionButton.innerHTML = 'Wrong <i class="fas fa-times-circle"></i>'; // Change text to "Wrong"
+                    }
+
+                    // Disable all options after one is clicked
+                    document.querySelectorAll('#quizCard3 .options button').forEach(btn => {
+                        btn.disabled = true;
+                    });
+
+                    // Move to the next question after 1 second
+                    setTimeout(() => {
+                        currentQuestionIndex++;
+                        if (currentQuestionIndex < quizQuestions.length) {
+                            displayQuestion();
+                        } else {
+                            // Hide the quiz card and show the score
+                            document.getElementById('quizCard3').classList.add('d-none');
+                            const scoreCard = document.createElement('div');
+                            scoreCard.classList.add('card', 'my-5', 'shadow-lg');
+                            scoreCard.innerHTML = `
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Score</h5>
+                                    <p class="card-text">Your total score is: ${score}</p>
+                                </div>
+                            `;
+                            document.querySelector('.container').appendChild(scoreCard);
+                        }
+                    }, 1000); // 1000 milliseconds = 1 second
+                });
+                optionsElement.appendChild(optionButton);
+            });
+        }
+
+        // Show the quiz card and hide the rules card
+        document.getElementById('quizCard2').classList.add('d-none');
+        document.getElementById('quizCard3').classList.remove('d-none');
+
+        // Display the first question
+        displayQuestion();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Fetch the content of Navbar.html
+    fetch('Navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('Navbar').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
+  });
+    </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

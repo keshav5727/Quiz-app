@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Ranbir</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<style>
+    i{
+        font-size:35px;
+        color:black;
+    }
+</style>
+<body>
+<div id="Navbar"></div>
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="card my-3 shadow-lg w-50" id="quizCard1">
+            <img src="./images/ranbir.jpeg" style="height: 300px;" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="py-2"><strong class="">Test Your Knowledge: The Ranbir Kapoor Challenge</strong></p>
+                <p class="card-text">Play this quiz for entertainment and joy.</p>
+                <div class="row">
+                    <a class=" btn-lg " href="https://wa.me/918929864832"><i class="fab fa-whatsapp"></i></a>
+                    <a class=" btn-lg " href="https://www.instagram.com/keshav_udesi"><i class="fab fa-instagram"></i></a>   
+                </div>
+                <button id="playQuizBtn" class="btn btn-primary mt-2">Play</button>
+            </div>
+        </div>
+
+        <div class="card my-5 shadow-lg d-none" id="quizCard2">
+            <div class="card-body">
+                <h5 class="card-title">Rules:</h5>
+                <p class="card-text">Answer the questions correctly to score points.</p>
+                <p class="card-text">You will have multiple-choice options for each question. Choose the correct option.</p>
+                <p class="card-text">Once you start the quiz, you cannot go back to previous questions.</p>
+                <button id="startQuizBtn" class="btn btn-primary">Start Quiz</button>
+            </div>
+        </div>
+
+        <div class="card my-5 shadow-lg d-none" id="quizCard3" style="width:33rem;">
+            <div class="card-body">
+                <p class="question"></p>
+                <div class="options">
+                    <!-- Options will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!--container-->
+
+<script>
+    document.getElementById('playQuizBtn').addEventListener('click', function() {
+        // Show the rules card and hide the main card
+        document.getElementById('quizCard1').classList.add('d-none');
+        document.getElementById('quizCard2').classList.remove('d-none');
+    });
+
+    document.getElementById('startQuizBtn').addEventListener('click', function() {
+        // Define quiz questions array
+        const quizQuestions = [
+    {
+        question: "In which movie did Ranbir Kapoor make his acting debut?",
+        options: ["Saawariya", "Wake Up Sid", "Rocket Singh: Salesman of the Year", "Bachna Ae Haseeno"],
+        correctAnswer: "Saawariya"
+    },
+    {
+        question: "Ranbir Kapoor portrayed the role of a deaf and mute character in which film?",
+        options: ["Barfi!", "Rockstar", "Tamasha", "Sanju"],
+        correctAnswer: "Barfi!"
+    },
+    {
+        question: "Who is the director of the movie 'Ae Dil Hai Mushkil' in which Ranbir Kapoor starred?",
+        options: ["Karan Johar", "Imtiaz Ali", "Anurag Kashyap", "Ayan Mukerji"],
+        correctAnswer: "Karan Johar"
+    },
+    {
+        question: "Ranbir Kapoor won his first Filmfare Award for Best Actor for which film?",
+        options: ["Rockstar", "Wake Up Sid", "Barfi!", "Yeh Jawaani Hai Deewani"],
+        correctAnswer: "Rockstar"
+    },
+    {
+        question: "In which movie did Ranbir Kapoor play the role of a salesman?",
+        options: ["Rocket Singh: Salesman of the Year", "Sanju", "Tamasha", "Roy"],
+        correctAnswer: "Rocket Singh: Salesman of the Year"
+    },
+    {
+        question: "Who was Ranbir Kapoor's co-star in the film 'Yeh Jawaani Hai Deewani'?",
+        options: ["Deepika Padukone", "Anushka Sharma", "Katrina Kaif", "Priyanka Chopra"],
+        correctAnswer: "Deepika Padukone"
+    },
+    {
+        question: "Ranbir Kapoor belongs to which famous Bollywood family?",
+        options: ["Kapoor family", "Bachchan family", "Roshan family", "Deol family"],
+        correctAnswer: "Kapoor family"
+    },
+    {
+        question: "In which film did Ranbir Kapoor portray the character of a rock musician?",
+        options: ["Rockstar", "Ae Dil Hai Mushkil", "Jagga Jasoos", "Barfi!"],
+        correctAnswer: "Rockstar"
+    },
+    {
+        question: "Who directed the film 'Sanju', a biopic on the life of Sanjay Dutt, in which Ranbir Kapoor played the lead role?",
+        options: ["Rajkumar Hirani", "Sanjay Leela Bhansali", "Anurag Kashyap", "Karan Johar"],
+        correctAnswer: "Rajkumar Hirani"
+    },
+    {
+        question: "Ranbir Kapoor played the role of a detective in which film?",
+        options: ["Jagga Jasoos", "Roy", "Barfi!", "Rocket Singh: Salesman of the Year"],
+        correctAnswer: "Jagga Jasoos"
+    }
+    // Add more questions here
+];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Function to display current question
+        function displayQuestion() {
+            const questionElement = document.querySelector('#quizCard3 .question');
+            const optionsElement = document.querySelector('#quizCard3 .options');
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+
+            // Display question
+            questionElement.textContent = currentQuestion.question;
+
+            // Display options
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const optionButton = document.createElement('button');
+                optionButton.textContent = option;
+                optionButton.classList.add('btn', 'btn-primary','btn-lg', 'mx-2','my-2');
+                optionButton.dataset.index = index; // Store index for checking correct answer
+                optionButton.addEventListener('click', () => {
+                    const selectedOptionIndex = parseInt(optionButton.dataset.index);
+                    if (selectedOptionIndex === currentQuestion.options.indexOf(currentQuestion.correctAnswer)) {
+                        optionButton.style.backgroundColor = 'green'; // Change background color to green
+                        optionButton.innerHTML = 'Correct <i class="fas fa-check-circle"></i>'; // Change text to "Correct"
+                        score++; // Increment score for correct answer
+                    } else {
+                        optionButton.style.backgroundColor = 'red'; // Change background color to red
+                        optionButton.innerHTML = 'Wrong <i class="fas fa-times-circle"></i>'; // Change text to "Wrong"
+                    }
+
+                    // Disable all options after one is clicked
+                    document.querySelectorAll('#quizCard3 .options button').forEach(btn => {
+                        btn.disabled = true;
+                    });
+
+                    // Move to the next question after 1 second
+                    setTimeout(() => {
+                        currentQuestionIndex++;
+                        if (currentQuestionIndex < quizQuestions.length) {
+                            displayQuestion();
+                        } else {
+                            // Hide the quiz card and show the score
+                            document.getElementById('quizCard3').classList.add('d-none');
+                            const scoreCard = document.createElement('div');
+                            scoreCard.classList.add('card', 'my-5', 'shadow-lg');
+                            scoreCard.innerHTML = `
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Score</h5>
+                                    <p class="card-text">Your total score is: ${score} out of 10</p>
+                                </div>
+                            `;
+                            document.querySelector('.container').appendChild(scoreCard);
+                        }
+                    }, 1000); // 1000 milliseconds = 1 second
+                });
+                optionsElement.appendChild(optionButton);
+            });
+        }
+
+        // Show the quiz card and hide the rules card
+        document.getElementById('quizCard2').classList.add('d-none');
+        document.getElementById('quizCard3').classList.remove('d-none');
+
+        // Display the first question
+        displayQuestion();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Fetch the content of Navbar.html
+    fetch('Navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('Navbar').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
+  });
+    </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
